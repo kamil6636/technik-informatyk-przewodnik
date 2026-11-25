@@ -227,6 +227,22 @@ tr:last-child td{border-bottom:0}
 .steps .val{white-space:normal;overflow-wrap:anywhere}
 .efekt{margin:8px 0 0;padding:9px 14px;border-radius:10px;background:var(--ok-soft);color:var(--fg);font-size:15px;line-height:1.55;border-left:4px solid var(--ok)}
 .efekt b{color:var(--ok);margin-right:4px}
+.tmodes{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.tbar{position:sticky;top:64px;z-index:5;display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 14px;margin:10px 0;font-size:14px}
+.tbar b{font:600 18px var(--f-mono);color:var(--exam)}
+.tres{border-radius:12px;padding:14px 18px;margin:12px 0;display:flex;flex-direction:column;gap:4px}
+.tres b{font-size:24px}.tres.ok{background:var(--ok-soft);color:var(--ok)}.tres.bad{background:var(--exam-soft);color:var(--exam)}
+.tq{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0}
+.tq.good{border-color:var(--ok)}.tq.wrong{border-color:var(--exam)}
+.tqh{font-weight:600;font-size:16px;line-height:1.5;margin-bottom:10px;display:flex;gap:8px}.tqh span{color:var(--muted);font-family:var(--f-mono)}
+.topt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);border-radius:8px;padding:9px 12px;margin:6px 0;font:15px var(--f-body);cursor:pointer}
+.topt:hover:not([disabled]){border-color:var(--w11)}
+.topt.sel{border-color:var(--w11);background:var(--w11-soft)}
+.topt.right{border-color:var(--ok);background:var(--ok-soft)}
+.topt.miss{border-color:var(--exam);background:var(--exam-soft)}
+.topt[disabled]{cursor:default}
+.texp{margin-top:8px;font-size:14px;line-height:1.55;color:var(--muted)}
+.tcat small{opacity:.6;margin-left:3px}
 .res{display:flex;flex-direction:column;gap:8px}
 .res a{display:flex;flex-direction:column;gap:3px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);text-decoration:none;color:var(--fg)}
 .res a:hover{border-color:var(--acc)}
@@ -963,9 +979,9 @@ Add-DnsServerResourceRecordA -ZoneName "szkola.local" -Name "www" -IPv4Address 1
    R`{Zakończ} > {Uruchom usługę}`]],
   ['4. Klienci',[
    R`Na kliencie {Brama domyślna} = adres LAN serwera «192.168.10.10»`,
-   R`Test: «ping 8.8.8.8»`]]],
+   R`Test: «ping» bramy po stronie WAN (adres z arkusza). Internetu na egzaminie nie ma, więc nie pinguj 8.8.8.8`]]],
  tip:R`Jako publiczną wybierz kartę WAN, nie LAN.`,
- check:[R`Klient: «ping 8.8.8.8»`],
+ check:[R`Klient: «ping» adresu WAN serwera albo bramy WAN odpowiada`],
  pam:'WAN = Internet (publiczna). LAN = klienci. Brama klienta = IP serwera od strony LAN.',
  errs:[['Pomylone karty','RRAS > prawy klik na serwerze > Wyłącz routing, potem skonfiguruj od nowa z kartą WAN.'],
   ['Stara brama u klientów','Brama klienta = IP karty LAN serwera (albo opcja 003 w DHCP).'],
@@ -987,7 +1003,8 @@ Add-DnsServerResourceRecordA -ZoneName "szkola.local" -Name "www" -IPv4Address 1
    R`{Typ urządzenia}: {Urządzenie TCP/IP}, {Nazwa hosta lub adres IP}: z arkusza`,
    R`Odznacz {Badaj drukarkę i automatycznie wybierz sterownik} > {Dalej}`,
    R`Szuka i nie znajduje? {Standardowe} > {Generic Network Card} > {Dalej}`,
-   R`{Zainstaluj nowy sterownik} > {Dalej} > producent {Microsoft} > np. {Microsoft MS-XPS Class Driver 2} > {Dalej}`,
+   R`{Zainstaluj nowy sterownik} > {Dalej} > {Z dysku…} > {Przeglądaj…} > pendrive DOKUMENTACJA/PROGRAMY > folder DRUKARKA > plik .inf > {OK} > {Dalej}`,
+   R`Na pendrive nie ma sterownika? Producent {Microsoft} > np. {Microsoft MS-XPS Class Driver 2} > {Dalej}`,
    R`{Nazwa drukarki} z arkusza, zaznacz {Udostępnij tę drukarkę}, {Nazwa udziału} z arkusza > {Dalej} > {Dalej} > {Zakończ}`]],
   ['3. Uprawnienia i godziny',[
    R`Po lewej {Drukarki}. Prawy klik na drukarce > {Właściwości}`,
@@ -1605,13 +1622,15 @@ assign letter=E`]]},
  exam:['Windows Update','godziny aktywne','Menedżer urządzeń'],
  sec:[
   ['1. Windows Update',[
+   R`Egzamin: internetu nie ma, więc nic się nie pobierze. {Wstrzymaj aktualizacje} i godziny aktywne da się ustawić`,
    R`{Start} > {Ustawienia} > po lewej {Windows Update}`,
    R`{Wstrzymaj aktualizacje}: wybierz liczbę tygodni z arkusza`,
    R`{Opcje zaawansowane} > {Godziny aktywnego użytkowania} > {Ręcznie} > od–do z arkusza`]],
   ['2. Sterownik urządzenia',[
    R`Prawy klik {Start} > {Menedżer urządzeń}`,
    R`Żółty wykrzyknik = brak sterownika. Prawy klik na nim > {Aktualizuj sterownik}`,
-   R`{Przeglądaj mój komputer w poszukiwaniu sterowników} > {Przeglądaj…} > folder > {Dalej}`,
+   R`{Przeglądaj mój komputer w poszukiwaniu sterowników} > {Przeglądaj…} > pendrive DOKUMENTACJA/PROGRAMY > folder ze sterownikiem > zaznacz {Uwzględnij podfoldery} > {Dalej}`,
+   R`Nie szukaj „automatycznie”: na egzaminie nie ma internetu`,
    R`Wyłączenie urządzenia: prawy klik > {Wyłącz urządzenie} > {Tak}`]]],
  tip:R`Cofnięcie sterownika: dwuklik na urządzeniu > zakładka {Sterownik} > {Przywróć sterownik}.`,
  check:[R`W Menedżerze urządzeń nie ma żółtych wykrzykników`],
@@ -1667,7 +1686,7 @@ assign letter=E`]]},
    R`Czy działa: «systemctl status nazwa» > szukaj zielonego {active (running)} > wyjście {q}`,
    R`Po zmianie pliku konfiguracyjnego: «systemctl restart nazwa»`]],
   ['4. Cockpit (jeśli wolisz klikać)',[
-   R`«zypper in -y cockpit»`,
+   R`«zypper in -y cockpit» (egzamin bez internetu: najpierw «rpm -q cockpit». Jest wersja = pomiń instalację)`,
    R`«systemctl enable --now cockpit.socket»`,
    R`Firefox: «https://localhost:9090»`,
    R`Ostrzeżenie o certyfikacie > {Zaawansowane} > {Akceptuję ryzyko i kontynuuję}`,
@@ -1676,7 +1695,7 @@ assign letter=E`]]},
  check:[R`«whoami» pokazuje Twój login`,R`Cockpit otwiera się na «https://localhost:9090»`],
  pam:'sudo = zrób jako admin. Cockpit = port 9090. Wklej w Terminalu = Ctrl+Shift+V.',
  errs:[['„Permission denied”','Dodaj przed poleceniem.'],
-  ['„command not found”','Literówka albo brak programu: «zypper in -y nazwa».'],
+  ['„command not found”','Literówka albo brak programu: «zypper in -y nazwa» (egzamin bez internetu: najpierw «rpm -q nazwa». Jest wersja = pomiń instalację).'],
   ['Cockpit się nie otwiera','«systemctl enable --now cockpit.socket». Z innego komputera dodaj cockpit w zaporze.'],
   ['W Cockpit wszystko szare','Kliknij u góry Ograniczony dostęp > Włącz dostęp administracyjny.'],
   ['nie przyjmuje hasła','Spróbuj hasła roota. openSUSE często o nie pyta.']],
@@ -1736,7 +1755,7 @@ firewall-cmd --reload`]]},
  errs:[['Ustawienia na „lo”','To nie karta sieciowa. Wybierz kartę enp…'],
   ['Maska zamiast prefiksu','Wpisz 24.'],
   ['Adres się nie zmienił','Nie przeładowałeś połączenia. nmtui > Activate a connection > Deactivate i Activate. Albo «nmcli connection up "nazwa"».'],
-  ['„nmtui: command not found”','Użyj nmcli (sekcja niżej) albo zainstaluj: «zypper in -y NetworkManager-tui».'],
+  ['„nmtui: command not found”','Użyj nmcli (sekcja niżej) albo zainstaluj: «zypper in -y NetworkManager-tui» (egzamin bez internetu: najpierw «rpm -q NetworkManager-tui». Jest wersja = pomiń instalację).'],
   ['Wpisałem adres bez /24','nmtui da /32 i nic nie działa. Popraw na adres/24.'],
   ['Brak internetu','Sprawdź bramę i DNS.']],
  cmds:[['sh',R`hostnamectl set-hostname linux01
@@ -1919,7 +1938,7 @@ firewall-cmd --list-all`]]},
  exam:['usługa sshd','autostart','połączenie ssh'],
  sec:[
   ['1. Włącz na Linuksie',[
-   R`Zainstalowany? «zypper in -y openssh-server» (zwykle już jest)`,
+   R`Zainstalowany? «zypper in -y openssh-server» (egzamin bez internetu: najpierw «rpm -q openssh-server». Jest wersja = pomiń instalację) (zwykle już jest)`,
    R`«systemctl enable --now sshd»`,
    R`«systemctl status sshd» > {q}`,
    R`Zapora: «firewall-cmd --permanent --add-service=ssh», potem «firewall-cmd --reload»`]],
@@ -1953,7 +1972,7 @@ firewall-cmd --reload`]]},
   ['0. Zanim zaczniesz',[
    R`Musi być: folder /dane, grupa klasa, konto jkowalski (lekcje Konta i Uprawnienia)`]],
   ['1. Zainstaluj',[
-   R`«zypper in -y samba»`]],
+   R`«zypper in -y samba» (egzamin bez internetu: najpierw «rpm -q samba». Jest wersja = pomiń instalację)`]],
   ['2. Dopisz udział',[
    R`«nano /etc/samba/smb.conf»`,
    R`Strzałką w dół zjedź na sam koniec pliku`,
@@ -1977,7 +1996,7 @@ firewall-cmd --reload`]]},
  errs:[['„Odmowa dostępu”','Brak chcon (SELinux), brak smbpasswd albo zły chmod folderu.'],
   ['Udział niewidoczny','«systemctl restart smb», usługa samba w zaporze.'],
   ['testparm pokazuje błąd','Popraw literówkę w smb.conf.']],
- extra:[['p',R`Brak nano? «zypper in -y nano».`],['p',R`Na stałe dla SELinux: «semanage fcontext -a -t samba_share_t "/dane(/.*)?"», potem «restorecon -R /dane».`]],
+ extra:[['p',R`Brak nano? «zypper in -y nano» (egzamin bez internetu: najpierw «rpm -q nano». Jest wersja = pomiń instalację).`],['p',R`Na stałe dla SELinux: «semanage fcontext -a -t samba_share_t "/dane(/.*)?"», potem «restorecon -R /dane».`]],
  cmds:[['sh',R`zypper in -y samba
 smbpasswd -a jkowalski
 chcon -R -t samba_share_t /dane
@@ -1990,7 +2009,7 @@ firewall-cmd --reload`]]},
  exam:['apache2','index.html','autostart','http'],
  sec:[
   ['1. Zainstaluj i włącz',[
-   R`«zypper in -y apache2»`,
+   R`«zypper in -y apache2» (egzamin bez internetu: najpierw «rpm -q apache2». Jest wersja = pomiń instalację)`,
    R`«systemctl enable --now apache2»`,
    R`«systemctl status apache2» > {q}`]],
   ['2. Zrób stronę',[
@@ -2024,7 +2043,7 @@ firewall-cmd --reload`]]},
  exam:['vsftpd','bez anonimowych','zapis'],
  sec:[
   ['1. Zainstaluj',[
-   R`«zypper in -y vsftpd»`]],
+   R`«zypper in -y vsftpd» (egzamin bez internetu: najpierw «rpm -q vsftpd». Jest wersja = pomiń instalację)`]],
   ['2. Ustaw plik',[
    R`«nano /etc/vsftpd.conf»`,
    R`Szukanie: {Ctrl}+{W} > wpisz «anonymous_enable» > {Enter}`,
@@ -2052,17 +2071,22 @@ write_enable=YES`,
  exam:['zypper','instalacja','aktualizacja'],
  sec:[
   ['1. Odśwież i aktualizuj',[
+   R`Uwaga: odświeżanie i aktualizacja potrzebują internetu. Na egzaminie go nie ma, więc ten etap pomijasz`,
    R`«zypper ref»`,
    R`«zypper up -y»`,
    R`⟳ Zaktualizowało jądro (kernel)? «reboot»`]],
   ['2. Szukaj i instaluj',[
    R`Szukaj: «zypper se mc»`,
    R`Opis: «zypper info mc»`,
-   R`Instaluj: «zypper in -y mc»`]],
+   R`Instaluj: «zypper in -y mc» (egzamin bez internetu: najpierw «rpm -q mc». Jest wersja = pomiń instalację)`]],
   ['3. Usuń',[
    R`«zypper rm -y mc»`]],
   ['4. Sprawdź',[
    R`«rpm -q mc»`]],
+  ['Egzamin bez internetu',[
+   R`Czy program już jest: «rpm -q apache2» (wersja = jest, „is not installed” = nie ma)`,
+   R`Pakiety z płyty: w VirtualBox włóż ISO openSUSE do napędu > «zypper ar -c dvd:/ dvd» > «zypper in -y nazwa»`,
+   R`Plik .rpm z pendrive: «zypper in -y /run/media/administrator/PENDRIVE/plik.rpm»`]],
   ['Albo z okienkami',[
    R`Menu aplikacji > «Myrlyn» (następca YaST Software) > wyszukaj > zaznacz > {Accept}`]]],
  tip:R`Bez pisania: program {Myrlyn} albo w Cockpit {Aktualizacje oprogramowania (Software updates)}.`,
@@ -2079,7 +2103,7 @@ write_enable=YES`,
  sec:[
   ['1. Czy cron działa',[
    R`«systemctl status cron» > {q}`,
-   R`Brak? «zypper in -y cronie», potem «systemctl enable --now cron»`]],
+   R`Brak? «zypper in -y cronie» (egzamin bez internetu: najpierw «rpm -q cronie». Jest wersja = pomiń instalację), potem «systemctl enable --now cron»`]],
   ['2. Dopisz zadanie (vim)',[
    R`Zadanie roota: «crontab -e». Innego konta: «crontab -u jkowalski -e»`,
    R`Naciśnij {i}: na dole pojawi się {-- INSERT --}`,
@@ -2311,7 +2335,7 @@ const EF = {
 'ws-profile':[R`Oba foldery z ikonką udostępniania`,R`Zakładka {Profil}: «\\SRV01\Profile\jkowalski» (login zamiast %username%)`,R`W «C:\Profile» folder «jkowalski.V6»`,R`Plik nazywa się «NTUSER.MAN»`],
 'ws-przekierowanie':[R`Udział {Przekierowane} istnieje`,R`Przy {Dokumenty} ikona z zieloną strzałką`,R`Klient: {Dokumenty} > {Właściwości} > {Lokalizacja}: «\\SRV01\Przekierowane\jkowalski\Documents»`],
 'ws-iis':[R`W {Narzędzia} jest {Menedżer internetowych usług informacyjnych (IIS)}`,R`W «C:\www» plik «index.html» (NIE index.html.txt)`,R`Witryna na liście ze stanem {Uruchomiona}. Na serwerze «http://localhost:8080» pokazuje stronę`,R`Witryna FTP na liście. Eksplorator «ftp://localhost» pyta o login`,R`Przeglądarka pokazuje Twoją stronę pod adresem z arkusza`],
-'ws-routing':['',R`W «ncpa.cpl» karty «LAN» i «WAN»`,R`W {Narzędzia} jest {Routing i dostęp zdalny}`,R`Przy serwerze zielona strzałka w górę, pod {IPv4} jest {NAT}`,R`Klient: «ping 8.8.8.8» odpowiada`],
+'ws-routing':['',R`W «ncpa.cpl» karty «LAN» i «WAN»`,R`W {Narzędzia} jest {Routing i dostęp zdalny}`,R`Przy serwerze zielona strzałka w górę, pod {IPv4} jest {NAT}`,R`Klient: «ping» bramy WAN odpowiada`],
 'ws-druk':[R`W {Narzędzia} jest {Zarządzanie drukowaniem}`,R`Drukarka na liście {Drukarki}, stan {Gotowa}`,R`Zakładka {Zaawansowane}: zaznaczone {Dostępna od} z godzinami`,R`Na liście tylko wpisy z arkusza. Strona testowa wydrukowana`,R`W {Wdrożone drukarki} jest Twoja drukarka`],
 'ws-kopie':[R`W {Narzędzia} jest {Kopia zapasowa systemu Windows Server}`,R`{Stan: Ukończono} z dzisiejszą datą`,R`{Następna kopia zapasowa:} data i godzina z arkusza`],
 'ws-kopiowanie':[R`Szablon ma strzałkę w dół na ikonce (wyłączony)`,R`Nowe konto bez strzałki, w {Członek grupy} te same grupy`],
@@ -2347,7 +2371,7 @@ const EF = {
 'lx-samba':['',R`Instalacja bez błędów`,R`«testparm»: {Loaded services file OK.} i sekcja {[dane]}`,R`smb: zielone {active (running)}`,R`Okno Eksploratora z plikami udziału`],
 'lx-www':[R`apache2: zielone {active (running)}`,R`Plik zapisany`,R`{success}`,R`«curl» wypisuje Twój HTML. Windows pokazuje stronę`,R`Strona pod «:8080»`],
 'lx-ftp':['',R`Plik z 3 linijkami bez „#”`,R`vsftpd: zielone {active (running)}`,R`Eksplorator pokazuje pliki z katalogu domowego konta`],
-'lx-pakiety':[R`Koniec bez błędów albo {Nothing to do.}`,R`{Installing: mc … [done]}`,R`{Removing mc … [done]}`,R`«rpm -q mc» pokazuje wersję (po usunięciu: {is not installed})`,R`Program zainstalowany`],
+'lx-pakiety':[R`Koniec bez błędów albo {Nothing to do.}`,R`{Installing: mc … [done]}`,R`{Removing mc … [done]}`,R`«rpm -q mc» pokazuje wersję (po usunięciu: {is not installed})`,R`Pakiet zainstalowany bez internetu`,R`Program zainstalowany`],
 'lx-cron':[R`Zielone {active (running)}`,R`{crontab: installing new crontab}`,R`Zapisane bez błędu`,R`«crontab -l» pokazuje linijkę`],
 'hw-kabel':[R`Płaszcz zdjęty równo, żyłki proste`,R`Od lewej: BP P BZ N BN Z BB B`,R`Wtyk trzyma płaszcz, wszystkie styki wciśnięte`,R`Diody 1–8 po kolei na obu częściach`,R`Żyłki wciśnięte, panel przykręcony`],
 'hw-ruter':[R`Strona logowania rutera`,R`Status WAN pokazuje Twój adres`,R`DHCP {Wyłączony} albo Twój zakres. Rezerwacja na liście`,R`Na stacji widać sieć Wi-Fi o nazwie z arkusza`,R`VLAN na liście z portem`,R`Panel działa pod nowym adresem LAN`],
@@ -2577,6 +2601,7 @@ function arkBox(){
 }
 
 const RULES = [
+ ['Bez internetu','programy i sterowniki tylko z pendrive DOKUMENTACJA/PROGRAMY, dokumentacja rutera i przełącznika też tam'],
  ['Najpierw przeczytaj','całe zadanie, zakreśl nazwy i hasła'],
  ['Kolejność','sieć → domena → konta → reszta → klient'],
  ['Przepisuj dokładnie','wielkie litery, polskie znaki, kropki'],
@@ -2627,6 +2652,69 @@ const QUIZ = [
  ['Windows: „Odmowa dostępu” do Samby. Co sprawdzić?','SELinux (chcon) i smbpasswd',['DNS na Windows','Wersję Apache','Kartę grafiki'],'lx-samba']
 ];
 const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const TB = [["sieci", "Adres rozgłoszeniowy (broadcast) sieci 192.168.1.64/26 to:", "192.168.1.127", ["192.168.1.64", "192.168.1.128", "192.168.1.255"], "/26 to bloki po 64 adresy: 64–127. Ostatni adres bloku (127) to broadcast."], ["sieci", "Maska /27 zapisana dziesiętnie to:", "255.255.255.224", ["255.255.255.240", "255.255.255.192", "255.255.255.248"], "27 jedynek: trzy pełne oktety (24) + 3 bity = 128+64+32 = 224."], ["sieci", "Ile adresów hostów można przydzielić w sieci /28?", "14", ["16", "30", "6"], "2^(32−28) = 16 adresów, minus adres sieci i broadcast = 14."], ["sieci", "Adres sieci, do której należy host 192.168.10.77/27, to:", "192.168.10.64", ["192.168.10.0", "192.168.10.72", "192.168.10.96"], "/27 to bloki po 32: 64–95. 77 mieści się w bloku zaczynającym się od 64."], ["sieci", "Maska 255.255.252.0 w zapisie skróconym (CIDR) to:", "/22", ["/20", "/23", "/24"], "255.255 = 16 bitów, 252 = 11111100 = 6 bitów. Razem 22."], ["sieci", "Na ile podsieci /26 można podzielić sieć /24?", "4", ["2", "8", "6"], "Pożyczasz 2 bity: 2^2 = 4 podsieci po 64 adresy."], ["sieci", "Który adres należy do puli adresów prywatnych?", "10.0.0.1", ["11.0.0.1", "172.32.0.1", "192.169.1.1"], "Prywatne: 10.0.0.0/8, 172.16.0.0–172.31.255.255, 192.168.0.0/16."], ["sieci", "Komputer dostał adres 169.254.12.5. Co to oznacza?", "Nie otrzymał adresu z serwera DHCP (APIPA)", ["Ma poprawny adres z DHCP", "Jest podłączony do Internetu", "Ma adres IPv6"], "169.254.x.x Windows nadaje sam (APIPA), gdy serwer DHCP nie odpowiada."], ["sieci", "Adres pętli zwrotnej (loopback) w IPv4 to:", "127.0.0.1", ["192.168.0.1", "0.0.0.0", "255.255.255.255"], "127.0.0.1 (localhost) to zawsze ten sam komputer."], ["sieci", "Adres pętli zwrotnej w IPv6 to:", "::1", ["fe80::1", "::", "ff02::1"], "::1 to odpowiednik 127.0.0.1."], ["sieci", "Adres IPv4 172.16.5.1 należy do klasy:", "B", ["A", "C", "D"], "Klasa B: pierwszy oktet 128–191."], ["sieci", "Adres 224.0.0.1 to adres:", "multicast (grupowy)", ["prywatny klasy C", "rozgłoszeniowy", "pętli zwrotnej"], "224–239 to klasa D, adresy multicast."], ["sieci", "Adres IPv6 ma długość:", "128 bitów", ["32 bity", "64 bity", "48 bitów"], "IPv4 = 32 bity, IPv6 = 128 bitów."], ["sieci", "Adres fizyczny MAC karty sieciowej ma długość:", "48 bitów", ["32 bity", "64 bity", "128 bitów"], "MAC to 6 bajtów, np. 00-1A-2B-3C-4D-5E."], ["sieci", "Który protokół zamienia adres IP na adres MAC?", "ARP", ["DNS", "DHCP", "ICMP"], "ARP pyta w sieci lokalnej: kto ma ten adres IP?"], ["sieci", "Który protokół automatycznie przydziela komputerom adresy IP?", "DHCP", ["DNS", "ARP", "SNMP"], "DHCP daje adres, maskę, bramę i DNS."], ["sieci", "Do czego służy usługa DNS?", "Zamienia nazwy domen na adresy IP", ["Przydziela adresy IP", "Szyfruje połączenia", "Przesyła pocztę"], "Np. www.egzamin.local → 192.168.0.10."], ["sieci", "Rekord DNS wskazujący serwer poczty dla domeny to:", "MX", ["A", "CNAME", "PTR"], "MX = Mail eXchanger."], ["sieci", "Rekord DNS typu PTR służy do:", "zamiany adresu IP na nazwę (wyszukiwanie wsteczne)", ["zamiany nazwy na IPv4", "utworzenia aliasu", "wskazania serwera poczty"], "PTR jest w strefie wyszukiwania wstecznego."], ["sieci", "Rekord DNS będący aliasem (drugą nazwą) innego rekordu to:", "CNAME", ["A", "AAAA", "NS"], "CNAME = Canonical Name, np. ftp → www."], ["sieci", "Rekord DNS przypisujący nazwie adres IPv6 to:", "AAAA", ["A", "MX", "SRV"], "A = IPv4, AAAA = IPv6."], ["sieci", "Domyślny port usługi HTTPS to:", "443", ["80", "8080", "21"], "HTTP 80, HTTPS 443."], ["sieci", "Domyślny port usługi SSH to:", "22", ["23", "21", "25"], "Telnet 23, SSH 22."], ["sieci", "Port 21 jest domyślnie używany przez:", "FTP (sterowanie)", ["SSH", "SMTP", "DNS"], "FTP: 21 sterowanie, 20 dane (tryb aktywny)."], ["sieci", "Usługa DNS domyślnie korzysta z portu:", "53", ["25", "67", "110"], "DNS = 53 (UDP i TCP)."], ["sieci", "Pulpit zdalny Windows (RDP) korzysta domyślnie z portu:", "3389", ["3306", "22", "5900"], "3389 to RDP. 3306 to MySQL, 5900 to VNC."], ["sieci", "Protokół wysyłania poczty elektronicznej to:", "SMTP", ["POP3", "IMAP", "SNMP"], "SMTP wysyła (port 25), POP3/IMAP odbierają."], ["sieci", "Który protokół odbiera pocztę i zostawia ją na serwerze z folderami?", "IMAP", ["POP3", "SMTP", "FTP"], "POP3 zwykle pobiera i usuwa, IMAP synchronizuje."], ["sieci", "Protokół bezpołączeniowy warstwy transportowej to:", "UDP", ["TCP", "HTTP", "FTP"], "UDP nie potwierdza dostarczenia, TCP tak."], ["sieci", "Polecenie ping korzysta z protokołu:", "ICMP", ["TCP", "UDP", "ARP"], "ping wysyła ICMP Echo Request."], ["sieci", "Model OSI ma warstw:", "7", ["4", "5", "6"], "Fizyczna, łącza danych, sieciowa, transportowa, sesji, prezentacji, aplikacji."], ["sieci", "Przełącznik (switch) działa głównie w warstwie modelu OSI:", "2 – łącza danych", ["1 – fizycznej", "3 – sieciowej", "4 – transportowej"], "Przełącznik kieruje ramki po adresach MAC."], ["sieci", "Ruter działa w warstwie modelu OSI:", "3 – sieciowej", ["2 – łącza danych", "1 – fizycznej", "7 – aplikacji"], "Ruter kieruje pakiety po adresach IP."], ["sieci", "Urządzenie łączące różne sieci i wybierające trasę pakietów to:", "ruter", ["koncentrator", "przełącznik niezarządzalny", "wzmacniak"], "Ruter łączy sieci, np. LAN z Internetem."], ["sieci", "Czym przełącznik różni się od koncentratora (huba)?", "Wysyła ramkę tylko do portu, pod którym jest odbiorca", ["Wysyła ramkę do wszystkich portów", "Działa w warstwie 1", "Nie ma adresów MAC w tabeli"], "Hub powtarza sygnał na wszystkie porty."], ["sieci", "Brama domyślna w ustawieniach komputera to adres:", "rutera, przez który wychodzi ruch do innych sieci", ["serwera DNS", "serwera DHCP", "przełącznika"], "Bez bramy komputer działa tylko w swojej sieci."], ["sieci", "Mechanizm zamiany adresów prywatnych na publiczny adres rutera to:", "NAT", ["DNS", "VLAN", "STP"], "NAT pozwala wielu komputerom korzystać z jednego adresu publicznego."], ["sieci", "Standard sieci wirtualnych VLAN ze znakowaniem ramek to:", "IEEE 802.1Q", ["IEEE 802.3af", "IEEE 802.11ac", "IEEE 802.1D"], "802.1Q dodaje znacznik VLAN (tag) do ramki."], ["sieci", "Port przełącznika przenoszący wiele sieci VLAN z tagami to port:", "trunk (tagged)", ["dostępowy (access)", "konsolowy", "PoE"], "Access = jeden VLAN bez tagu, trunk = wiele VLAN z tagami."], ["sieci", "Protokół STP w przełącznikach zapobiega:", "powstawaniu pętli w sieci", ["atakom na hasła", "kolizjom adresów IP", "utracie zasilania"], "Spanning Tree wyłącza nadmiarowe połączenia."], ["sieci", "Maksymalna długość segmentu kabla skrętki (Ethernet) to:", "100 m", ["185 m", "500 m", "1000 m"], "Skrętka kat. 5e/6: do 100 m."], ["sieci", "Skrętka kategorii 5e pozwala na transmisję do:", "1 Gb/s", ["100 Mb/s", "10 Gb/s na 100 m", "40 Gb/s"], "Kat. 5e: 1000BASE-T. 10 Gb/s na 100 m to kat. 6A."], ["sieci", "W standardzie T568B pin nr 1 to żyła:", "biało-pomarańczowa", ["biało-zielona", "pomarańczowa", "niebieska"], "T568B: BP, P, BZ, N, BN, Z, BB, B."], ["sieci", "Wtyk stosowany na kablu skrętki Ethernet to:", "8P8C (RJ-45)", ["RJ-11", "BNC", "SC"], "RJ-11 to telefon, BNC to koncentryk, SC to światłowód."], ["sieci", "Na największe odległości stosuje się:", "światłowód jednomodowy", ["skrętkę kat. 6", "światłowód wielomodowy", "kabel koncentryczny"], "Jednomodowy: kilometry i dziesiątki km."], ["sieci", "Do sprawdzenia poprawności zarobienia kabla skrętki służy:", "tester okablowania", ["multimetr cyfrowy", "reflektometr optyczny", "zaciskarka"], "Tester pokazuje diodami kolejność żył 1–8."], ["sieci", "Topologia, w której wszystkie komputery łączą się z jednym przełącznikiem, to:", "gwiazda", ["magistrala", "pierścień", "siatka"], "Najczęstsza topologia w sieciach LAN."], ["sieci", "Technologia PoE pozwala na:", "zasilanie urządzenia przez kabel sieciowy", ["szyfrowanie ruchu", "łączenie sieci VLAN", "priorytetyzację ruchu"], "Np. punkty dostępowe i kamery bez osobnego zasilacza."], ["sieci", "Najbezpieczniejsze z podanych zabezpieczeń sieci Wi-Fi to:", "WPA2-PSK z szyfrowaniem AES", ["WEP", "WPA z TKIP", "sieć otwarta z ukrytym SSID"], "WEP łamie się w minuty. Najnowszy jest WPA3."], ["sieci", "SSID to:", "nazwa sieci bezprzewodowej", ["hasło do Wi-Fi", "adres MAC punktu dostępowego", "numer kanału"], "Service Set Identifier."], ["sieci", "Standard Wi-Fi 802.11ac pracuje w paśmie:", "5 GHz", ["2,4 GHz", "900 MHz", "60 GHz"], "802.11n: 2,4 i 5 GHz, 802.11ac: 5 GHz."], ["sieci", "Polecenie Windows pokazujące trasę pakietów do hosta to:", "tracert", ["ping", "netstat", "arp -a"], "Linux: traceroute."], ["sieci", "Polecenie ipconfig /release służy do:", "zwolnienia adresu otrzymanego z DHCP", ["wyczyszczenia pamięci DNS", "pokazania adresu MAC", "odnowienia adresu"], "Potem ipconfig /renew pobiera nowy adres."], ["sieci", "Pamięć podręczną DNS w Windows czyści polecenie:", "ipconfig /flushdns", ["ipconfig /renew", "nslookup /clear", "netstat -r"], "Pomaga, gdy nazwa wskazuje stary adres."], ["sieci", "Polecenie pokazujące aktywne połączenia i otwarte porty to:", "netstat", ["tracert", "nslookup", "hostname"], "netstat -an pokazuje porty w stanie LISTENING."], ["sieci", "Do ręcznego zadawania zapytań serwerowi DNS służy:", "nslookup", ["ping", "tracert", "route"], "nslookup www.egzamin.local."], ["sieci", "Szyfrowany odpowiednik Telnetu do zdalnej konsoli to:", "SSH", ["FTP", "RDP", "SNMP"], "Telnet wysyła hasło otwartym tekstem."], ["sieci", "Protokół do zarządzania i monitorowania urządzeń sieciowych to:", "SNMP", ["SMTP", "SMB", "NTP"], "Simple Network Management Protocol."], ["sieci", "Protokół synchronizacji czasu w sieci to:", "NTP", ["SNMP", "RIP", "ICMP"], "Network Time Protocol, port 123."], ["sieci", "Udostępnianie plików i drukarek w sieci Windows odbywa się protokołem:", "SMB", ["NFS", "FTP", "HTTP"], "Samba to implementacja SMB w Linuksie."], ["sieci", "W Linuksie adresy serwerów DNS zapisane są w pliku:", "/etc/resolv.conf", ["/etc/hosts", "/etc/hostname", "/etc/fstab"], "/etc/hosts to lokalne wpisy nazwa–adres."], ["sieci", "Metoda dostępu do medium w klasycznym Ethernecie to:", "CSMA/CD", ["CSMA/CA", "Token Ring", "TDMA"], "CSMA/CA jest w Wi-Fi."], ["systemy", "Polecenie Windows do sprawdzenia i naprawy błędów dysku to:", "chkdsk", ["sfc", "diskpart", "defrag"], "chkdsk C: /f naprawia błędy systemu plików."], ["systemy", "Polecenie sprawdzające integralność plików systemowych Windows to:", "sfc /scannow", ["chkdsk /r", "gpupdate /force", "dism /?"], "System File Checker."], ["systemy", "Natychmiastowe odświeżenie zasad grupy wykonuje polecenie:", "gpupdate /force", ["gpresult /r", "secpol.msc", "net policy"], "gpresult /r pokazuje, które zasady działają."], ["systemy", "Które polecenie pokazuje wynikowe (zastosowane) zasady grupy?", "gpresult /r", ["gpupdate", "gpedit.msc", "rsop /f"], "Pokazuje m.in. zastosowane obiekty GPO."], ["systemy", "Konsolę Zarządzanie dyskami uruchamia polecenie:", "diskmgmt.msc", ["devmgmt.msc", "compmgmt.exe", "diskpart /gui"], "devmgmt.msc to Menedżer urządzeń."], ["systemy", "Menedżer urządzeń uruchamia polecenie:", "devmgmt.msc", ["diskmgmt.msc", "services.msc", "msinfo32"], "Tam aktualizujesz sterowniki."], ["systemy", "Konsolę usług systemu Windows uruchamia polecenie:", "services.msc", ["msconfig", "taskmgr", "eventvwr.msc"], "Uruchamianie, zatrzymywanie, typ uruchomienia usług."], ["systemy", "Podgląd zdarzeń Windows uruchamia polecenie:", "eventvwr.msc", ["perfmon", "taskschd.msc", "regedit"], "Dzienniki: System, Aplikacja, Zabezpieczenia."], ["systemy", "Lokalne zasady zabezpieczeń (hasła, blokada konta) otwiera:", "secpol.msc", ["gpmc.msc", "lusrmgr.msc", "dsa.msc"], "Na serwerze w domenie używasz zasad grupy."], ["systemy", "Konsolę Użytkownicy i grupy lokalne otwiera:", "lusrmgr.msc", ["dsa.msc", "secpol.msc", "useradd"], "dsa.msc to użytkownicy Active Directory."], ["systemy", "Konsola Użytkownicy i komputery usługi Active Directory to:", "dsa.msc", ["gpmc.msc", "dnsmgmt.msc", "lusrmgr.msc"], "gpmc.msc to zarządzanie zasadami grupy."], ["systemy", "Menedżera zadań otwiera skrót:", "Ctrl+Shift+Esc", ["Ctrl+Alt+Tab", "Win+E", "Alt+F4"], "Win+E otwiera Eksplorator."], ["systemy", "Edytor rejestru Windows uruchamia polecenie:", "regedit", ["msconfig", "cmd", "gpedit"], "Klucz HKEY_LOCAL_MACHINE dotyczy całego komputera."], ["systemy", "System plików Windows z uprawnieniami, szyfrowaniem EFS i przydziałami to:", "NTFS", ["FAT32", "exFAT", "ext4"], "FAT32 nie ma uprawnień do plików."], ["systemy", "Największy pojedynczy plik w systemie FAT32 może mieć:", "4 GB", ["2 GB", "16 GB", "2 TB"], "Dlatego duże pliki kopiuje się na NTFS lub exFAT."], ["systemy", "Profil mobilny użytkownika domeny jest przechowywany:", "w udostępnionym folderze na serwerze", ["tylko na lokalnym dysku", "w rejestrze serwera", "na kontrolerze w pliku NTDS.dit"], "Dzięki temu ten sam pulpit jest na każdym komputerze."], ["systemy", "Profil obowiązkowy powstaje po zmianie nazwy pliku NTUSER.DAT na:", "NTUSER.MAN", ["NTUSER.OLD", "NTUSER.SYS", "NTUSER.LOCK"], "Zmiany użytkownika nie są zapisywane po wylogowaniu."], ["systemy", "Znak $ na końcu nazwy udziału Windows oznacza, że udział jest:", "ukryty", ["tylko do odczytu", "administracyjny i zablokowany", "szyfrowany"], "Ukryty udział nie jest widoczny w przeglądaniu sieci."], ["systemy", "Użytkownik ma przez udział „Zmiana”, a w NTFS „Odczyt”. Przez sieć może:", "tylko czytać", ["czytać i zmieniać", "nic", "pełną kontrolę"], "Przez sieć działa bardziej restrykcyjne z dwóch uprawnień."], ["systemy", "Jednostka organizacyjna w Active Directory to:", "OU", ["GPO", "DC", "DN"], "OU grupuje użytkowników i komputery, można do niej podpiąć GPO."], ["systemy", "Hasło DSRM podaje się przy:", "promowaniu serwera do kontrolera domeny", ["tworzeniu konta użytkownika", "dołączaniu stacji do domeny", "instalacji DHCP"], "Tryb przywracania usług katalogowych."], ["systemy", "Zakres grupy AD, który może zawierać konta z własnej domeny i być używany w całym lesie, to:", "globalny", ["lokalny domeny", "lokalny komputera", "tymczasowy"], "Typowy wybór na egzaminie: grupa globalna, typ zabezpieczenia."], ["systemy", "Zmienna oznaczająca login zalogowanego użytkownika w ścieżce profilu to:", "%username%", ["%userprofile%", "%computername%", "%homepath%"], "np. \\\\SERWER\\Profile\\%username%."], ["systemy", "Prawa 755 w Linuksie to:", "rwxr-xr-x", ["rwxrwxrwx", "rw-r--r--", "rwxr-----"], "7=rwx, 5=r-x."], ["systemy", "Prawa 640 w Linuksie to:", "rw-r-----", ["rwxr-x---", "rw-rw-r--", "r--r-----"], "6=rw-, 4=r--, 0=---."], ["systemy", "Polecenie Linux zmieniające właściciela pliku to:", "chown", ["chmod", "chgrp", "passwd"], "chown jan:klasa plik."], ["systemy", "Polecenie Linux pokazujące wolne miejsce na dyskach to:", "df -h", ["du -h", "free -h", "lsblk -f"], "du liczy rozmiar katalogów, free pokazuje RAM."], ["systemy", "Polecenie Linux pokazujące zajętość pamięci RAM to:", "free -h", ["df -h", "top -d", "mem"], "free -h: total, used, free."], ["systemy", "Polecenie Linux wyświetlające bieżący katalog to:", "pwd", ["cd", "ls", "dir"], "Print Working Directory."], ["systemy", "Polecenie Linux pokazujące procesy na żywo to:", "top", ["ps -x", "kill", "jobs"], "Wyjście z top: q."], ["systemy", "Proces o numerze 1234 w Linuksie kończy polecenie:", "kill 1234", ["stop 1234", "end 1234", "rm 1234"], "kill -9 1234 wymusza zakończenie."], ["systemy", "Pomoc do polecenia w Linuksie wyświetla:", "man", ["help-me", "info -h", "doc"], "np. man chmod."], ["systemy", "Informacje o kontach użytkowników Linux są w pliku:", "/etc/passwd", ["/etc/shadow", "/etc/users", "/home/passwd"], "Zaszyfrowane hasła są w /etc/shadow."], ["systemy", "Zaszyfrowane (zahaszowane) hasła użytkowników Linux są w pliku:", "/etc/shadow", ["/etc/passwd", "/etc/group", "/root/hasla"], "Plik czytelny tylko dla roota."], ["systemy", "Konto superużytkownika w Linuksie ma UID:", "0", ["1", "1000", "500"], "root ma UID 0."], ["systemy", "Katalog domowy konta root to:", "/root", ["/home/root", "/", "/etc/root"], "Zwykli użytkownicy mają /home/login."], ["systemy", "Partycje montowane przy starcie Linuksa są zapisane w pliku:", "/etc/fstab", ["/etc/mtab", "/boot/grub", "/etc/disks"], "Kolumny: urządzenie, punkt montowania, typ, opcje."], ["systemy", "Menedżer pakietów openSUSE to:", "zypper", ["apt", "pacman", "dnf"], "Debian/Ubuntu: apt, Fedora: dnf."], ["systemy", "Program uruchamiający zadania cyklicznie o określonych godzinach w Linuksie to:", "cron", ["systemd-boot", "at-once", "sched"], "crontab -e: minuta godzina dzień miesiąc dzień_tygodnia."], ["systemy", "Wpis crontab „0 20 * * *” oznacza:", "codziennie o 20:00", ["co 20 minut", "20. dnia miesiąca o północy", "w niedziele o 20:00"], "Kolejność: minuta, godzina, dzień, miesiąc, dzień tygodnia."], ["systemy", "Polecenie systemctl enable --now sshd:", "uruchamia usługę teraz i włącza autostart", ["tylko uruchamia usługę", "tylko włącza autostart", "instaluje usługę"], "enable = autostart, --now = start od razu."], ["systemy", "Najczęstszy system plików nowych instalacji Linuksa (np. na partycje danych) to:", "ext4", ["NTFS", "FAT16", "HFS+"], "openSUSE domyślnie używa Btrfs dla systemu, ext4/XFS dla danych."], ["systemy", "Partycja wymiany (pamięć wirtualna) w Linuksie to:", "swap", ["tmp", "boot", "home"], "Używana, gdy brakuje RAM-u."], ["systemy", "Tablica partycji MBR pozwala na najwyżej:", "4 partycje podstawowe", ["128 partycji podstawowych", "2 partycje podstawowe", "dowolną liczbę partycji"], "MBR obsługuje też dyski tylko do 2 TB. GPT ma 128 partycji."], ["systemy", "RAID 1 to:", "dublowanie (lustro) dwóch dysków", ["przeplatanie bez nadmiarowości", "parzystość rozproszona", "łączenie dysków w jeden"], "Jeden dysk padnie, dane zostają na drugim."], ["systemy", "RAID 0:", "zwiększa szybkość, ale nie chroni danych", ["chroni dane przez kopię lustrzaną", "wymaga minimum 3 dysków", "używa parzystości"], "Awaria jednego dysku = utrata wszystkich danych."], ["systemy", "RAID 5 wymaga minimum:", "3 dysków", ["2 dysków", "4 dysków", "5 dysków"], "Parzystość rozproszona na wszystkie dyski."], ["systemy", "Kopia przyrostowa zawiera pliki zmienione od:", "ostatniej dowolnej kopii (pełnej lub przyrostowej)", ["ostatniej kopii pełnej", "początku roku", "instalacji systemu"], "Różnicowa = od ostatniej pełnej."], ["systemy", "Kopia różnicowa zawiera pliki zmienione od:", "ostatniej kopii pełnej", ["ostatniej kopii przyrostowej", "wczoraj", "ostatniego restartu"], "Rośnie z każdym dniem do następnej pełnej."], ["systemy", "Dysków SSD nie należy:", "defragmentować", ["formatować w NTFS", "podłączać przez SATA", "partycjonować"], "Defragmentacja zużywa SSD i nic nie daje. SSD używa TRIM."], ["systemy", "Hiperwizor typu 1 (bare-metal) to np.:", "Hyper-V Server / VMware ESXi", ["VirtualBox na Windows", "VMware Workstation", "Wine"], "Typ 2 działa jako program w systemie (VirtualBox)."], ["systemy", "Rola Windows Server do udostępniania stron WWW to:", "IIS", ["AD DS", "WSUS", "DHCP"], "Internet Information Services."], ["systemy", "Rola Windows Server do centralnej dystrybucji aktualizacji to:", "WSUS", ["WDS", "IIS", "RRAS"], "Windows Server Update Services."], ["systemy", "Rola Windows Server do instalacji systemów przez sieć to:", "WDS", ["WSUS", "DHCP", "NPS"], "Windows Deployment Services."], ["systemy", "Udostępnianie folderów Linuksa komputerom z Windows zapewnia:", "Samba", ["Apache", "Postfix", "Bind"], "Bind = DNS, Postfix = poczta, Apache = WWW."], ["systemy", "Polecenie net use Z: \\\\SERWER\\Dane:", "mapuje dysk sieciowy Z:", ["udostępnia folder Dane", "tworzy konto Z", "kopiuje folder na dysk Z:"], "net share tworzy udział, net user zarządza kontami."], ["systemy", "Polecenie Windows tworzące konto lokalne „jan” to:", "net user jan /add", ["useradd jan", "net localgroup jan /add", "adduser jan"], "useradd to Linux."], ["systemy", "Rezerwacja w serwerze DHCP przypisuje stały adres na podstawie:", "adresu MAC", ["nazwy użytkownika", "adresu bramy", "numeru portu"], "Komputer z tym MAC zawsze dostaje ten sam adres."], ["systemy", "Tryb, w którym Windows uruchamia się z minimalnym zestawem sterowników, to:", "tryb awaryjny", ["tryb samolotowy", "tryb hibernacji", "tryb zgodności"], "Pomaga usunąć problematyczny sterownik."], ["systemy", "Narzędzie Windows do konfigurowania programów uruchamianych przy starcie to:", "Menedżer zadań (zakładka Uruchamianie)", ["Podgląd zdarzeń", "diskpart", "Zapora Windows"], "W starszych wersjach: msconfig."], ["systemy", "Konto Administrator lokalne w nowej instalacji Windows 11 jest domyślnie:", "wyłączone", ["włączone bez hasła", "usunięte", "w grupie Goście"], "Włączasz je w lusrmgr.msc albo net user administrator /active:yes."], ["systemy", "Zmienna środowiskowa PATH określa:", "foldery, w których system szuka programów", ["katalog domowy użytkownika", "ścieżkę profilu mobilnego", "folder plików tymczasowych"], "Dzięki niej wpisujesz „ping”, a nie pełną ścieżkę."], ["systemy", "Archiwum tar.gz w Linuksie tworzy polecenie:", "tar -czf kopia.tar.gz /dane", ["tar -xzf kopia.tar.gz /dane", "gzip -r /dane kopia", "zip -tar /dane"], "c = create, z = gzip, f = plik. x = rozpakuj."], ["sprzet", "Standardowe napięcie zasilania modułów DDR4 to:", "1,2 V", ["1,5 V", "1,8 V", "3,3 V"], "DDR3 1,5 V, DDR4 1,2 V, DDR5 1,1 V."], ["sprzet", "Moduły pamięci RAM do laptopów to:", "SO-DIMM", ["DIMM", "SIMM", "RIMM"], "SO-DIMM są krótsze od DIMM."], ["sprzet", "Pamięć tracąca dane po wyłączeniu zasilania to:", "RAM", ["ROM", "Flash", "EEPROM"], "Pamięć ulotna."], ["sprzet", "Pamięć z korekcją błędów stosowana w serwerach to:", "ECC", ["SDR", "Dual Channel", "XMP"], "Error Correcting Code."], ["sprzet", "Tryb dual channel wymaga zwykle montażu modułów RAM:", "parami w odpowiednich gniazdach (kolorach)", ["w dowolnym jednym gnieździe", "tylko modułów ECC", "w gniazdach PCIe"], "Np. A1 i B1 albo A2 i B2 – patrz instrukcja płyty."], ["sprzet", "Najszybsza pamięć podręczna procesora to:", "L1", ["L2", "L3", "RAM"], "L1 jest najmniejsza i najbliżej rdzenia."], ["sprzet", "Dyski M.2 NVMe korzystają z magistrali:", "PCI Express", ["SATA", "USB", "IDE"], "Dlatego są dużo szybsze od SATA."], ["sprzet", "Interfejs SATA III ma przepustowość:", "6 Gb/s", ["3 Gb/s", "1,5 Gb/s", "16 Gb/s"], "SATA I 1,5, II 3, III 6 Gb/s."], ["sprzet", "USB 3.0 (USB 3.2 Gen 1) ma przepustowość:", "5 Gb/s", ["480 Mb/s", "10 Gb/s", "40 Gb/s"], "USB 2.0 = 480 Mb/s."], ["sprzet", "Główne złącze zasilania płyty ATX ma:", "24 piny", ["20 pinów zawsze", "8 pinów", "6 pinów"], "Procesor ma osobne złącze 4/8-pin (EPS)."], ["sprzet", "Napięcia na wyjściach zasilacza ATX to:", "+3,3 V, +5 V, +12 V", ["+1,5 V, +3 V, +9 V", "+5 V, +24 V, +48 V", "+12 V, +24 V, +230 V"], "Najmocniej obciążona jest linia +12 V."], ["sprzet", "Procedura testująca sprzęt zaraz po włączeniu komputera to:", "POST", ["BOOT", "CMOS", "MBR"], "Power-On Self Test; błędy sygnalizuje dźwiękami."], ["sprzet", "Ustawienia BIOS/UEFI podtrzymuje bateria typu:", "CR2032", ["AA", "CR123", "LR44"], "Pastylka 3 V na płycie głównej."], ["sprzet", "Między procesorem a radiatorem nakłada się:", "pastę termoprzewodzącą", ["klej montażowy", "podkładkę gumową", "smar silikonowy do łożysk"], "Wypełnia mikroszczeliny i poprawia odprowadzanie ciepła."], ["sprzet", "Opaska antystatyczna chroni podzespoły przed:", "wyładowaniami elektrostatycznymi (ESD)", ["przepięciem w sieci", "przegrzaniem", "wilgocią"], "Zakładasz ją przed dotykaniem płyty, RAM, kart."], ["sprzet", "Element drukarki laserowej utrwalający toner na papierze to:", "grzałka (utrwalacz, fuser)", ["bęben światłoczuły", "głowica", "taśma barwiąca"], "Bęben przenosi toner, fuser go wtapia."], ["sprzet", "Materiał eksploatacyjny drukarki igłowej to:", "taśma barwiąca", ["toner", "tusz", "folia termotransferowa"], "Drukarki igłowe drukują przez kalkę."], ["sprzet", "Drukarka umożliwiająca druk przez kalkę (kilka kopii naraz) to:", "igłowa", ["laserowa", "atramentowa", "termiczna"], "Uderzenia igieł przebijają przez warstwy."], ["sprzet", "Rozdzielczość drukarki podaje się w:", "dpi", ["Hz", "ppm", "bps"], "Dots per inch. ppm to szybkość (stron na minutę)."], ["sprzet", "Matryca monitora z najlepszymi kątami widzenia i kolorami to zwykle:", "IPS", ["TN", "STN", "CRT"], "TN jest szybka, ale ma słabe kąty widzenia."], ["sprzet", "Cyfrowe złącze obrazu i dźwięku to:", "HDMI", ["VGA", "PS/2", "RS-232"], "VGA jest analogowe i bez dźwięku."], ["sprzet", "Karta graficzna montowana jest zwykle w gnieździe:", "PCI Express x16", ["PCI Express x1", "AGP x2", "M.2"], "x16 = najwięcej linii."], ["sprzet", "Urządzenie podtrzymujące zasilanie przy zaniku prądu to:", "UPS", ["listwa przeciwprzepięciowa", "zasilacz ATX", "stabilizator PoE"], "UPS ma akumulator."], ["sprzet", "Dysk bez części ruchomych to:", "SSD", ["HDD", "dyskietka", "napęd DVD"], "HDD ma talerze i głowice."], ["sprzet", "Parametr dysku HDD wpływający na szybkość dostępu to m.in.:", "prędkość obrotowa (rpm)", ["liczba pinów SATA", "napięcie 12 V", "kolor obudowy"], "Typowo 5400 lub 7200 rpm."], ["sprzet", "System monitorowania stanu dysku (błędy, temperatura) to:", "S.M.A.R.T.", ["POST", "ACPI", "TRIM"], "Odczytasz go np. CrystalDiskInfo lub smartctl."], ["sprzet", "Program pokazujący parametry procesora i pamięci RAM (zakładki CPU, Memory, SPD) to:", "CPU-Z", ["Defraggler", "PuTTY", "WinSCP"], "SPD pokazuje producenta i numer seryjny modułu."], ["sprzet", "1 KiB to:", "1024 bajty", ["1000 bajtów", "1024 bity", "8 bitów"], "KiB = 2^10. KB w zapisie SI = 1000."], ["sprzet", "Liczba 255 zapisana binarnie to:", "11111111", ["11111110", "10000000", "11110000"], "8 jedynek = 255."], ["sprzet", "Liczba szesnastkowa 1F to dziesiętnie:", "31", ["15", "16", "25"], "1×16 + 15 = 31."], ["sprzet", "Liczba dziesiętna 10 zapisana binarnie to:", "1010", ["1100", "1001", "0110"], "8 + 2 = 10."], ["sprzet", "Liczba binarna 11000000 to dziesiętnie:", "192", ["128", "224", "96"], "128 + 64 = 192."], ["sprzet", "Liczba dziesiętna 200 zapisana szesnastkowo to:", "C8", ["B8", "C0", "D2"], "12×16 + 8 = 200."], ["sprzet", "Wymiana podzespołu bez wyłączania komputera to:", "hot swap (hot plug)", ["cold boot", "overclocking", "POST"], "Np. dyski w serwerach, USB."], ["sprzet", "Bezprzewodowa łączność krótkiego zasięgu do słuchawek i myszy to:", "Bluetooth", ["IrDA 802.3", "Ethernet", "RS-485"], "Zasięg zwykle do ok. 10 m."], ["sprzet", "UEFI z funkcją Secure Boot:", "pozwala uruchomić tylko podpisane programy rozruchowe", ["przyspiesza procesor", "szyfruje dysk", "wyłącza BIOS"], "Chroni przed bootkitami."], ["sprzet", "Gniazdo procesora z pinami na płycie głównej (nie w procesorze) to:", "LGA", ["PGA", "DIMM", "ZIF dysku"], "Intel zwykle LGA, starsze AMD PGA. AM5 to też LGA."], ["sprzet", "Układ na płycie głównej pośredniczący w komunikacji procesora z resztą sprzętu to:", "chipset", ["BIOS", "zegar RTC", "VRM"], "Decyduje m.in. o liczbie portów i linii PCIe."], ["sprzet", "Przy wymianie modułu RAM komputer powinien być:", "wyłączony i odłączony od zasilania", ["w trybie uśpienia", "włączony, ale bez logowania", "podłączony do UPS"], "Na płycie bywa napięcie czuwania 5 V SB."], ["sprzet", "Złącze zasilania dysku SATA ma:", "15 pinów", ["7 pinów", "4 piny Molex", "24 piny"], "7 pinów ma złącze danych SATA."], ["sprzet", "Moc zasilacza dobiera się do:", "sumy poboru mocy podzespołów z zapasem", ["wielkości obudowy", "liczby portów USB", "pojemności dysku"], "Typowo zapas ok. 20–30%."], ["bezp", "Licencja przypisana na stałe do komputera, z którym kupiono system, to:", "OEM", ["BOX", "GPL", "freeware"], "BOX można przenieść na inny komputer."], ["bezp", "Program darmowy, ale wyświetlający reklamy, to:", "adware", ["shareware", "freeware bez reklam", "trial"], "Adware utrzymuje się z reklam."], ["bezp", "Program do wypróbowania przez określony czas, potem płatny, to:", "shareware / trial", ["freeware", "GPL", "public domain"], "Po okresie próbnym trzeba kupić licencję."], ["bezp", "Licencja GNU GPL pozwala m.in. na:", "modyfikowanie i rozpowszechnianie programu z kodem źródłowym", ["tylko używanie bez zmian", "sprzedaż bez udostępniania kodu", "używanie tylko w szkołach"], "Pochodne programy też muszą być na GPL."], ["bezp", "Złośliwy program szyfrujący dane i żądający okupu to:", "ransomware", ["adware", "keylogger", "spyware"], "Ochrona: kopie zapasowe offline."], ["bezp", "Program rejestrujący naciśnięcia klawiszy to:", "keylogger", ["robak", "rootkit", "adware"], "Może wykraść hasła."], ["bezp", "Złośliwy program samodzielnie rozprzestrzeniający się przez sieć to:", "robak (worm)", ["trojan", "adware", "dialer"], "Trojan udaje przydatny program."], ["bezp", "Podszywanie się pod bank w e-mailu, by wyłudzić hasło, to:", "phishing", ["spoofing ARP", "DDoS", "sniffing"], "Sprawdzaj adres strony i nadawcę."], ["bezp", "Atak polegający na zalewaniu serwera żądaniami z wielu komputerów to:", "DDoS", ["phishing", "brute force", "SQL injection"], "Distributed Denial of Service."], ["bezp", "Zgadywanie hasła przez sprawdzanie wszystkich kombinacji to atak:", "brute force", ["phishing", "man-in-the-middle", "spoofing"], "Chroni przed nim blokada konta po kilku próbach."], ["bezp", "Zapora sieciowa (firewall):", "filtruje ruch sieciowy według reguł", ["usuwa wirusy z plików", "szyfruje dysk", "przydziela adresy IP"], "Np. blokuje porty, zezwala na ping."], ["bezp", "Najsilniejsze z podanych haseł to:", "Kr0l!k#2024zaQ", ["admin123", "qwerty", "Jan2005"], "Długie, wielkie i małe litery, cyfry i znaki specjalne."], ["bezp", "Uwierzytelnianie dwuskładnikowe (2FA) to np.:", "hasło + kod z aplikacji w telefonie", ["dwa różne hasła", "login + hasło", "hasło wpisane dwa razy"], "Dwa różne rodzaje: coś, co wiesz + coś, co masz."], ["bezp", "Zasada kopii zapasowych 3-2-1 oznacza:", "3 kopie, na 2 rodzajach nośników, 1 poza firmą", ["3 dyski w RAID, 2 serwery, 1 chmura", "kopia co 3 dni, 2 tygodnie, 1 miesiąc", "3 hasła, 2 konta, 1 administrator"], "Chroni przed awarią, kradzieżą i pożarem."], ["bezp", "Zużyty sprzęt elektroniczny należy:", "oddać do punktu zbiórki elektroodpadów", ["wyrzucić do odpadów zmieszanych", "spalić", "wyrzucić do plastiku"], "Ustawa o zużytym sprzęcie elektrycznym (WEEE)."], ["bezp", "Przy porażeniu prądem w pierwszej kolejności należy:", "odłączyć źródło prądu", ["polać poszkodowanego wodą", "zacząć resuscytację bez odłączenia", "podać leki przeciwbólowe"], "Najpierw bezpieczeństwo ratującego."], ["bezp", "Do gaszenia urządzeń elektrycznych pod napięciem służy gaśnica:", "śniegowa (CO2) lub proszkowa", ["wodna", "pianowa", "koc mokry"], "Woda przewodzi prąd."], ["bezp", "Według prawa autorskiego użytkownik legalnego programu może:", "zrobić kopię zapasową, jeśli jest potrzebna do korzystania z programu", ["sprzedać kopię znajomemu", "udostępnić program w Internecie", "usunąć zabezpieczenia i rozpowszechniać"], "Kopia zapasowa jest dozwolona."], ["bezp", "Szyfrowanie całego dysku w Windows Pro zapewnia:", "BitLocker", ["EFS", "Defender", "Windows Hello"], "EFS szyfruje pojedyncze pliki i foldery."], ["bezp", "Szyfrowanie pojedynczych plików na NTFS w Windows to:", "EFS", ["BitLocker To Go", "TPM", "UAC"], "Właściwości > Zaawansowane > Szyfruj zawartość."], ["bezp", "Mechanizm Windows pytający o zgodę na zmiany wymagające uprawnień administratora to:", "UAC (Kontrola konta użytkownika)", ["TPM", "EFS", "SmartScreen"], "User Account Control."], ["bezp", "Aktualizacje systemu należy instalować, ponieważ:", "łatają luki bezpieczeństwa", ["zawsze przyspieszają komputer", "usuwają wszystkie wirusy", "zwiększają pojemność dysku"], "Większość ataków wykorzystuje znane, niezałatane luki."]];
+/* ===== Testy jak na egzaminie (część pisemna INF.02 / EE.08) ===== */
+const TCAT = {all:'Wszystko', sprzet:'Sprzęt komputerowy', systemy:'Systemy operacyjne', sieci:'Sieci komputerowe', bezp:'Bezpieczeństwo, prawo, BHP'};
+let TS = {kw:'INF.02', cat:'all', mode:null, qs:[], ans:{}, checked:false, end:0};
+let tTimer = null;
+function tPool(){ return TB.filter(q=>TS.cat==='all'||q[0]===TS.cat); }
+function tMake(q){ return {q, opts:shuffle([q[2],...q[3]])}; }
+function tStart(mode){
+  const pool = shuffle(tPool());
+  TS.mode = mode; TS.ans = {}; TS.checked = false;
+  TS.qs = (mode==='40' ? pool.slice(0,40) : mode==='all' ? pool : pool.slice(0,1)).map(tMake);
+  TS.end = mode==='40' ? Date.now()+60*60*1000 : 0;
+  clearInterval(tTimer);
+  if(TS.end) tTimer = setInterval(tTick, 1000);
+}
+function tTick(){
+  const el = document.getElementById('tClock');
+  if(!el || location.hash!=='#testy'){ return; }
+  const left = Math.max(0, TS.end-Date.now());
+  el.textContent = String(Math.floor(left/60000)).padStart(2,'0')+':'+String(Math.floor(left/1000)%60).padStart(2,'0');
+  if(left<=0 && !TS.checked){ TS.checked = true; clearInterval(tTimer); rerender(); }
+}
+function tScore(){ return TS.qs.filter((x,i)=>TS.ans[i]===x.q[2]).length; }
+function testy(){
+  let h = '<div class="wrap" style="--acc:var(--w11);--acc-soft:var(--w11-soft)"><div class="lhead"><h1>Testy '+TS.kw+'</h1>'+
+   '<p class="cel">Pytania jak w części pisemnej: 4 odpowiedzi, jedna dobra. Na egzaminie jest 40 pytań w 60 minut, żeby zdać, potrzeba co najmniej 50% (20 pytań).</p></div>'+
+   '<div class="filter tkw">'+['INF.02','EE.08'].map(k=>'<button data-kw="'+k+'" class="'+(TS.kw===k?'on':'')+'">'+k+'</button>').join('')+'</div>'+
+   (TS.kw==='EE.08'?'<p class="cel" style="font-size:14px">EE.08 to stara nazwa tej samej kwalifikacji. Zakres pytań jest ten sam co INF.02.</p>':'')+
+   '<div class="filter tcat">'+Object.entries(TCAT).map(([k,t])=>'<button data-tc="'+k+'" class="'+(TS.cat===k?'on':'')+'">'+t+' <small>'+(k==='all'?TB.length:TB.filter(q=>q[0]===k).length)+'</small></button>').join('')+'</div>'+
+   '<div class="tmodes"><button class="btn pri" data-tm="40">📝 Test 40 pytań · 60 min</button><button class="btn" data-tm="1">🎲 Losuj 1 pytanie</button><button class="btn" data-tm="all">📚 Wszystkie pytania z działu</button></div>';
+  const best = load('ka-t40','null');
+  if(best!==null) h += '<p class="cel" style="font-size:14px">Twój najlepszy wynik w teście 40 pytań: <b>'+best+'/40</b> ('+Math.round(best/40*100)+'%)</p>';
+  if(!TS.mode) return h+'</div>';
+  const n = TS.qs.length, sc = tScore();
+  if(TS.mode==='40') h += '<div class="tbar"><span>Pytań: '+n+' · zaznaczone: '+Object.keys(TS.ans).length+'</span>'+(TS.checked?'':'<b id="tClock">60:00</b>')+'</div>';
+  if(TS.checked && TS.mode!=='1'){
+    const pct = Math.round(sc/n*100), ok = pct>=50;
+    h += '<div class="tres '+(ok?'ok':'bad')+'"><b>'+sc+' / '+n+' ('+pct+'%)</b><span>'+(ok?'ZDANE 🎉 (próg 50%)':'NIE ZDANE (próg 50%). Przejrzyj czerwone pytania niżej.')+'</span></div>';
+  }
+  h += TS.qs.map((x,i)=>{
+    const a = TS.ans[i], show = TS.checked || (TS.mode==='1' && a!==undefined);
+    return '<section class="tq'+(show?(a===x.q[2]?' good':' wrong'):'')+'"><div class="tqh"><span>'+(i+1)+'.</span>'+esc(x.q[1])+'</div>'+
+      x.opts.map((o,j)=>{ let c=''; if(show){ if(o===x.q[2]) c=' right'; else if(o===a) c=' miss'; } else if(o===a) c=' sel';
+        return '<button class="topt'+c+'" data-tq="'+i+'" data-to="'+j+'"'+(show?' disabled':'')+'><b>'+'ABCD'[j]+'.</b> '+esc(o)+'</button>'; }).join('')+
+      (show?'<div class="texp">'+(a===x.q[2]?'✅ Dobrze. ':a===undefined?'⏺ Bez odpowiedzi. ':'❌ Dobra odpowiedź: <b>'+esc(x.q[2])+'</b>. ')+esc(x.q[4])+'</div>':'')+'</section>';
+  }).join('');
+  if(TS.mode==='1') h += '<div class="tmodes"><button class="btn pri" data-tm="1">Następne pytanie →</button></div>';
+  else if(!TS.checked) h += '<div class="tmodes"><button class="btn pri" id="tCheck">Sprawdź odpowiedzi!</button></div>';
+  else h += '<div class="tmodes"><button class="btn pri" data-tm="'+TS.mode+'">Nowy test</button></div>';
+  return h+'</div>';
+}
+function tClick(e){
+  const kw = e.target.closest('.tkw button'); if(kw){ TS.kw = kw.dataset.kw; rerender(); return true; }
+  const tc = e.target.closest('.tcat button'); if(tc){ TS.cat = tc.dataset.tc; TS.mode = null; clearInterval(tTimer); rerender(); return true; }
+  const tm = e.target.closest('[data-tm]'); if(tm){ tStart(tm.dataset.tm); $('#main').innerHTML = testy(); tTick(); window.scrollTo(0, tm.dataset.tm==='1'?scrollY:0); return true; }
+  const to = e.target.closest('.topt'); if(to && !to.disabled){ const i=+to.dataset.tq; TS.ans[i] = TS.qs[i].opts[+to.dataset.to]; rerender(); tTick(); return true; }
+  if(e.target.id==='tCheck'){
+    TS.checked = true; clearInterval(tTimer);
+    if(TS.mode==='40'){ const sc=tScore(), b=load('ka-t40','null'); if(b===null||sc>b) save('ka-t40',sc); }
+    $('#main').innerHTML = testy(); window.scrollTo(0,0); return true;
+  }
+  return false;
+}
 let Q = null;
 function newQuiz(){ Q = {qs:shuffle(QUIZ).slice(0,10).map(q=>({q, opts:shuffle([q[1],...q[2]])})), i:0, pick:null, score:0}; }
 
@@ -2752,7 +2840,7 @@ function renderSide(cur){
   $('#side').innerHTML =
     '<div class="navgrp"><a href="#start" class="'+(cur==='start'?'on':'')+'">Start</a><a href="#egzamin" class="ex '+(cur==='egzamin'?'on':'')+'">Próbny egzamin</a></div>'+
     grp('ws')+grp('w11')+grp('lx')+grp('hw')+
-    '<div class="navgrp"><h4>Narzędzia</h4><a href="#test" class="'+(cur==='test'?'on':'')+'">Szybki test</a><a href="#fiszki" class="'+(cur==='fiszki'?'on':'')+'">Fiszki do zapamiętania</a><a href="#bledy" class="'+(cur==='bledy'?'on':'')+'">Błędy i scenariusze</a><a href="#gpo" class="'+(cur==='gpo'?'on':'')+'">Zasady grupy A–Z</a><a href="#sciaga" class="'+(cur==='sciaga'?'on':'')+'">Ściąga poleceń</a><a href="#podsieci" class="'+(cur==='podsieci'?'on':'')+'">Kalkulator podsieci</a></div>';
+    '<div class="navgrp"><h4>Narzędzia</h4><a href="#testy" class="'+(cur==='testy'?'on':'')+'">Testy INF.02 / EE.08</a><a href="#test" class="'+(cur==='test'?'on':'')+'">Szybki test</a><a href="#fiszki" class="'+(cur==='fiszki'?'on':'')+'">Fiszki do zapamiętania</a><a href="#bledy" class="'+(cur==='bledy'?'on':'')+'">Błędy i scenariusze</a><a href="#gpo" class="'+(cur==='gpo'?'on':'')+'">Zasady grupy A–Z</a><a href="#sciaga" class="'+(cur==='sciaga'?'on':'')+'">Ściąga poleceń</a><a href="#podsieci" class="'+(cur==='podsieci'?'on':'')+'">Kalkulator podsieci</a></div>';
 }
 
 function home(){
@@ -2768,7 +2856,7 @@ function home(){
    '<div class="how"><div><b><span class="ui">Przycisk</span></b>to klikasz</div><div><b><span class="val">tekst</span></b>to wpisujesz</div><div><b>▶ Krok po kroku</b>jeden krok na ekran</div><div><b><span class="rs">⟳ RESTART</span></b>tu uruchom ponownie</div><div><b><span class="wt">⏳ CZEKAJ</span></b>nic nie klikaj, czekaj</div></div>'+'<section class="order"><h2>Kolejność na egzaminie: co kiedy</h2>'+'<div class="row"><b>1. Serwer</b><span>Nazwa <span class="ar">›</span> <span class="rs">⟳ RESTART</span> <span class="ar">›</span> stały IP, DNS na siebie <span class="ar">›</span> rola AD DS <span class="ar">›</span> flaga: podwyższ <span class="ar">›</span> <span class="rs">⟳ RESTART</span></span></div>'+'<div class="row"><b>2. Serwer</b><span>OU <span class="ar">›</span> grupy <span class="ar">›</span> użytkownicy <span class="ar">›</span> dodaj do grup <span class="ar">›</span> hasła (Default Domain Policy) <span class="ar">›</span> DHCP / DNS</span></div>'+'<div class="row"><b>3. Serwer</b><span>Foldery i udziały <span class="ar">›</span> profile / dysk domowy <span class="ar">›</span> GPO <span class="ar">›</span> reszta (WWW, FTP, drukarka, kopia)</span></div>'+'<div class="row"><b>4. Klient</b><span>IP i DNS = serwer <span class="ar">›</span> nazwa + domena <span class="ar">›</span> <span class="rs">⟳ RESTART</span> <span class="ar">›</span> zaloguj kontem z domeny <span class="ar">›</span> <span class="val">gpupdate /force</span></span></div>'+'<div class="row"><b>5. Na koniec</b><span>Sprawdź wszystko z arkusza po kolei. GPO komputera = <span class="rs">⟳ RESTART</span> klienta, GPO użytkownika = wyloguj i zaloguj</span></div>'+'</section>'+
    '<a class="examcta" href="#egzamin"><div><b>Próbny egzamin</b><span>Odhaczaj, co już umiesz zrobić · '+mockDone.size+' / '+MOCK.reduce((s,m)=>s+m.items.length,0)+'</span></div><i>Start →</i></a>'+
    '<div class="courses">'+card('ws')+card('w11')+card('lx')+card('hw')+'</div>'+
-   '<div class="tools"><a class="tool" href="#fiszki"><b>🧠 Fiszki</b><span>Pytanie → odpowiedź. Najłatwiej zapamiętać</span></a><a class="tool" href="#bledy"><b>⚠️ Błędy i scenariusze</b><span>Na serwerze działa, na kliencie nie? Sprawdzaj po kolei</span></a><a class="tool" href="#gpo"><b>📜 Zasady grupy A–Z</b><span>Każde ustawienie GPO z pełną ścieżką</span></a><a class="tool" href="#test"><b>Szybki test</b><span>10 pytań, klikasz odpowiedź'+(best()!==null?' · najlepiej '+best()+'/10':'')+'</span></a><a class="tool" href="#sciaga"><b>Ściąga poleceń</b><span>Win+R i Terminal Linuksa</span></a><a class="tool" href="#podsieci"><b>Kalkulator podsieci</b><span>Wpisz adres, dostaniesz maskę i zakres</span></a></div>'+
+   '<div class="tools"><a class="tool" href="#fiszki"><b>🧠 Fiszki</b><span>Pytanie → odpowiedź. Najłatwiej zapamiętać</span></a><a class="tool" href="#bledy"><b>⚠️ Błędy i scenariusze</b><span>Na serwerze działa, na kliencie nie? Sprawdzaj po kolei</span></a><a class="tool" href="#gpo"><b>📜 Zasady grupy A–Z</b><span>Każde ustawienie GPO z pełną ścieżką</span></a><a class="tool" href="#testy"><b>📝 Testy INF.02 / EE.08</b><span>40 pytań w 60 min jak na egzaminie, losowe pytanie, testy z działów · 188 pytań</span></a><a class="tool" href="#test"><b>Szybki test</b><span>10 pytań, klikasz odpowiedź'+(best()!==null?' · najlepiej '+best()+'/10':'')+'</span></a><a class="tool" href="#sciaga"><b>Ściąga poleceń</b><span>Win+R i Terminal Linuksa</span></a><a class="tool" href="#podsieci"><b>Kalkulator podsieci</b><span>Wpisz adres, dostaniesz maskę i zakres</span></a></div>'+
   '</div>';
 }
 
@@ -3244,6 +3332,7 @@ function route(){
   if(l) html = lesson(l);
   else if(id==='egzamin') html = exam();
   else if(id==='test') html = quiz();
+  else if(id==='testy') html = testy();
   else if(id==='bledy') html = bledy();
   else if(id==='gpo') html = gpoPage();
   else if(id==='fiszki') html = fiszki();
@@ -3264,6 +3353,7 @@ $('#q').addEventListener('input',e=>{ const v=e.target.value.trim(); if(v){ $('#
 $('#menuBtn').addEventListener('click',()=>{ $('#side').classList.add('open'); $('#backdrop').classList.add('open'); });
 $('#backdrop').addEventListener('click',closeMenu);
 $('#main').addEventListener('click',e=>{
+  if(location.hash==='#testy' && tClick(e)) return;
   const cp = e.target.closest('.copy'); if(cp){ copyText(CODES[+cp.dataset.c], cp); return; }
   const c2 = e.target.closest('.cp'); if(c2){ navigator.clipboard?.writeText(c2.dataset.t).then(()=>flash(c2,'Skopiowano'),()=>{}); return; }
   const fb = e.target.closest('.filter button'); if(fb){ csFilter=fb.dataset.f; $('#main').innerHTML=cheat(); return; }
